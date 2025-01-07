@@ -2,11 +2,15 @@
 
 set -o nounset
 
+# Environment variables
+[[ -z ${USER+x} ]] && USER="samba"
+[[ -z ${PASS+x} ]] && PASS=$USER
+
 # Set up user
 addgroup -g 1000 samba
-adduser -D -H -G samba -s /bin/false -u 1000 samba
-echo -e "samba\nsamba" | smbpasswd -a -s samba
-chown samba:samba /storage
+adduser -D -H -G samba -s /bin/false -u 1000 $USER
+echo -e "$PASS\n$PASS" | smbpasswd -a -s $USER
+chown $USER:samba /storage
 
 # Samba config
 cat << EOF | tee /config/smb.conf
@@ -20,7 +24,7 @@ cat << EOF | tee /config/smb.conf
     comment = Storage
     path = /storage
     read only = yes
-    write list = samba
+    write list = $USER
 EOF
 
 # Start samba service
