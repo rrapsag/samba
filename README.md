@@ -8,11 +8,18 @@ A simplest and lightweight samba docker container for sharing files quickly and 
 
 This docker image was created using Alpine Linux and a very simple samba configuration, for quickly creating a shared folder on the network. This allows you to share files between different systems.
 
+>[!NOTE]
+>The protocol used by samba in this docker image is SMB3. Older Windows versions will not be able to access the folder shared by the container.
+
 The shared folder is password protected and can be changed using environment variables when we run the docker command to create the container.
 
 ## Usage
 
-Start the container:
+You can get started creating a container from this image either use docker cli or docker-compose.
+
+### Docker
+
+Start the container with docker run:
 
 ```zsh
 docker run -d -p 139:139/tcp -p 445:445/tcp --name samba rrapsag/samba
@@ -41,6 +48,34 @@ docker run -d -p 139:139/tcp -p 445:445/tcp \
 >[!TIP]
 >Use user (UID) and group (GID) id to avoid files/folder permissions issues between the host OS and the container when using volumes.
 
+### Docker Compose
+
+Minimal docker-compose.yml:
+
+```yaml
+services:
+  samba:
+    image: rrapsag/samba:latest
+    container_name: samba
+    hostname: samba
+    ports:
+      - 139:139
+      - 445:445
+    environment:
+      USER: samba
+      PASSW: samba
+      #UID: 1000 # optional
+      #GID: 1000 # optional
+    volumes:
+      - /tmp/storage:/storage
+    restart: unless-stopped
+```
+Run:
+
+```zsh
+docker-compose up -d
+```
+
 ## Environment variables
 
 The container is configured using environment variables at runtime. We have the following variables available for container configuration:
@@ -55,5 +90,7 @@ The container is configured using environment variables at runtime. We have the 
 ## Building
 
 ```zsh
+git clone https://github.com/rrapsag/samba.git
+cd samba
 docker build -t rrapsag/samba:latest .
 ```
