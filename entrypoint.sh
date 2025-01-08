@@ -6,9 +6,12 @@ set -o nounset
 [[ -z ${USER+x} ]] && USER="samba"
 [[ -z ${PASS+x} ]] && PASS=$USER
 
+[[ "${UID:-""}" =~ ^[0-9]+$ ]] || UID=1000
+[[ "${GID:-""}" =~ ^[0-9]+$ ]] || GID=1000
+
 # Set up user
-addgroup -g 1000 samba
-adduser -D -H -G samba -s /bin/false -u 1000 $USER
+addgroup -g $GID samba
+adduser -D -H -G samba -s /bin/false -u $UID $USER
 echo -e "$PASS\n$PASS" | smbpasswd -a -s $USER
 chown $USER:samba /storage
 
@@ -19,6 +22,9 @@ cat << EOF | tee /config/smb.conf
     workgroup = WORKGROUP
     netbios name = samba
     security = user
+
+    dos charset = cp850
+    unix charset = utf-8
 
 [storage]
     comment = Storage
