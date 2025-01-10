@@ -1,0 +1,15 @@
+services:
+  samba:
+    image: rrapsag/samba:latest
+    container_name: samba
+    hostname: samba
+    ports:
+      - 445:445
+    environment:
+      USER: ${SMB_USER} # (default samba)
+      PASS: ${SMB_PASS} # (default samba)
+      #UID: ${USER_UID} # optional
+      #GID: ${USER_GID} # optional
+    volumes:
+      - ${DATA_SHARE}:/storage
+    restart: unless-stopped
