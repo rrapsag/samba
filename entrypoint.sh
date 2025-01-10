@@ -20,7 +20,8 @@ cat << EOF | tee /config/smb.conf
 [global]
     server string = Samba %v in docker
     workgroup = WORKGROUP
-    netbios name = samba
+    disable netbios = yes
+    smb ports = 445
     security = user
 
     dos charset = cp850

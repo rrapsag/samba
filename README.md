@@ -22,7 +22,7 @@ You can get started creating a container from this image either use docker cli o
 Start the container with docker run:
 
 ```zsh
-docker run -d -p 139:139/tcp -p 445:445/tcp --name samba rrapsag/samba
+docker run -d -p 445:445/tcp --name samba rrapsag/samba
 ```
 
 Setting shared folder user and password:
@@ -31,7 +31,7 @@ Setting shared folder user and password:
 >When username and password are not specified, by default **samba** will be set.
 
 ```zsh
-docker run -d -p 139:139/tcp -p 445:445/tcp \
+docker run -d -p 445:445/tcp \
     -e USER=user -e PASS=pass \
     --name samba rrapsag/samba
 ```
@@ -39,7 +39,7 @@ docker run -d -p 139:139/tcp -p 445:445/tcp \
 Mapping custom local volume:
 
 ```zsh
-docker run -d -p 139:139/tcp -p 445:445/tcp \
+docker run -d -p 445:445/tcp \
     -e USER=user -e PASS=pass \
     -v /tmp/storage:/storage \
     --name samba rrapsag/samba
@@ -59,7 +59,6 @@ services:
     container_name: samba
     hostname: samba
     ports:
-      - 139:139
       - 445:445
     environment:
       USER: samba
