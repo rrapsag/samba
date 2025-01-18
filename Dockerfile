@@ -2,7 +2,7 @@ FROM alpine:latest
 
 LABEL maintainer="Cesar Gaspar <rasec.rapsag@gmail.com>" \
     description="Simplest samba docker container." \
-    version="1.3"
+    version="1.4"
 
 RUN apk --no-cache upgrade && \
     apk --no-cache add samba samba-common-tools && \

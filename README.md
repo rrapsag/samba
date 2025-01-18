@@ -11,7 +11,7 @@ This docker image was created using Alpine Linux and a very simple samba configu
 >[!NOTE]
 >The protocol used by samba in this docker image is SMB3. Older Windows versions will not be able to access the folder shared by the container.
 
-The shared folder is password protected and can be changed using environment variables when we run the docker command to create the container.
+When the USER variable is not defined, the shared folder is public, otherwise the shared folder is password protected and can be changed any time when we run the docker command to create the container.
 
 ## Usage
 
@@ -28,7 +28,7 @@ docker run -d -p 445:445/tcp --name samba rrapsag/samba
 Setting shared folder user and password:
 
 >[!NOTE]
->When username and password are not specified, by default **samba** will be set.
+>When password is not specified, by default it will be set equal to the USER variable.
 
 ```zsh
 docker run -d -p 445:445/tcp \
